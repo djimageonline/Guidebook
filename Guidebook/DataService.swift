@@ -92,4 +92,33 @@ On the bottom floor is an exhibit room showing the history and science of animat
         
         
     }
+    
+    func getFileData () -> [City] {
+        
+        // Get file path to guidebookData.json
+        
+        if let url = Bundle.main.url(forResource: "GuidebookData", withExtension: "json") {
+            
+            do {
+                // Read file and turn to Data
+                let data = try Data(contentsOf: url)
+                
+                // Parse Data into Swift Instances
+                
+                let decoder = JSONDecoder()
+                
+                do {
+                    let cities = try decoder.decode([City].self, from: data)
+                    return cities
+                }
+                catch {
+                    print("Could not parse JSON: \(error)")
+                }
+            }
+            catch {
+                print("Couldn't read the file: \(error)")
+            }
+        }
+        return [City]()
+    }
 }
